@@ -1,0 +1,22 @@
+<nav>
+  <div class="site-title">
+    <a href="/"><h1>Khat</h1></a>
+    <p>By Blogger for Blogger</p>
+  </div>
+    <ul class="wel" >
+        <% if (user) { %>
+          <li>Welcome, <%= user.email %></li>
+          <div class="signin_login">
+            <li><a class="btnLogout" href="/logout">Log out</a></li>
+        <% } else { %>
+          <li><a class="btnLogin" href="/login">Log in</a></li>
+          <li><a class="btnSignup" href="/signup" class="btn">Sign up</a></li>
+        <% } %>
+          </div>
+    </ul>
+  <ul>
+    <li><a href="/">Blogs</a></li>
+    <li><a href="/about">About</a></li>
+    <li><a href="/blogs/create">New Blog</a></li>
+  </ul>
+</nav>

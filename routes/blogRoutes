@@ -1,0 +1,59 @@
+ const express = require('express');
+ const router = express.Router();
+ const Blog = require('../models/blog.js');
+ const { requireAuth, checkUser } = require('../middleware/authMiddleware');
+ const user = require('../models/user.js');
+
+ 
+
+  router.get('/blogs', (req, res) => {
+    Blog.find().sort({ createdAt: -1 })
+      .then(result => {
+        res.render('index', { blogs/*(This should be same as blogs.length())*/: result},);  //this is html css display 
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  });
+
+  router.post('/blogs' ,requireAuth, (req,res) => {
+    const blog = new Blog(req.body);
+    blog.save()
+    .then((result)=>{
+        res.redirect('/blogs');
+    })
+    .catch((err)=>{
+        console.log(err);
+    });
+  });
+
+
+  router.get('/blogs/create',requireAuth, (req, res) => {
+    res.render('create');
+  });
+
+
+  //note '/blogs/create' should be above '/blogs/:id' else create will be considered as id and error occurs
+  router.get('/blogs/:id',(req,res)=>{
+    const id = req.params.id;
+    Blog.findById(id)
+    .then(result=>{
+      res.render('details',{blog : result});
+    })
+    .catch(err=>{
+      console.log(err);
+    })
+  
+  });
+ 
+  
+  router.delete('/blogs/:id',requireAuth,(req,res)=>{
+    const id = req.params.id;
+    Blog.findByIdAndDelete(id)
+    .then((result)=>{
+      res.json({redirect : '/blogs'});
+    })
+    .catch(err=>{console.log(err)});
+  })
+
+  module.exports=router;
